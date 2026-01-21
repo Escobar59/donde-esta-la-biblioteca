@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using BusinessObjects.Entity;
-
 class Program
 {
     static void Main(string[] args)

@@ -1,10 +1,8 @@
-namespace BusinessObjects.Entity
+
+public enum TypeBook
 {
-    public enum TypeBook
-    {
-        Unknown,
-        Fantaisie,
-        Aventure,
-        Autre
-    }
+    Unknown,
+    Fantaisie,
+    Aventure,
+    Autre
 }
