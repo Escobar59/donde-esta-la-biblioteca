@@ -3,20 +3,25 @@ using System.Linq;
 
 public class CatalogManager
 {
-    private BookRepository _repo = new BookRepository();
+    private readonly BookRepository _repository;
+
+    public CatalogManager(BookRepository repository) 
+    {
+        _repository = repository;
+    }
 
     public IEnumerable<Book> GetCatalog()
     {
-        return _repo.GetAll();
+        return _repository.GetAll();
     }
 
     public IEnumerable<Book> GetCatalog(TypeBook type)
     {
-        return _repo.GetAll().Where(b => b.Type == type);
+        return _repository.GetAll().Where(i => i.Type == type);
     }
 
     public Book FindBook(int id)
     {
-        return _repo.Get(id);
+        return _repository.Get(id);
     }
 }

@@ -4,7 +4,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        var manager = new CatalogManager();
+        var BookRepository = new BookRepository();
+        var manager = new CatalogManager(BookRepository);
         var adventureBooks = manager.GetCatalog(TypeBook.Aventure);
         foreach (var book in adventureBooks)
         {
