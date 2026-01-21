@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class BookRepository
+public class BookRepository : IGenericRepository<Book>, IBookRepository
 {
     private List<Book> _books;
 

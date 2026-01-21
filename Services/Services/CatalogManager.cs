@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class CatalogManager
+public class CatalogManager : ICatalogManager
 {
-    private readonly BookRepository _repository;
+    private readonly IGenericRepository<Book> _repository;
 
-    public CatalogManager(BookRepository repository) 
+    public CatalogManager(IGenericRepository<Book> repository) 
     {
         _repository = repository;
     }
