@@ -9,7 +9,8 @@
             new Book { Name = "Indiana Jones", Type = "Aventure" }
         };
 
-        foreach (var book in books)
+        var categoryAItems = books.Where(book => book.Type == "Aventure");
+        foreach (var book in categoryAItems)
         {
             Console.WriteLine(book.Name);
         }
