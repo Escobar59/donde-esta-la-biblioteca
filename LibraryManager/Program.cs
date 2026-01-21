@@ -7,13 +7,15 @@ class Program
 {
     static void Main(string[] args)
     {
+        // 1. Créer le host avec la configuration des services
         var host = CreateHostBuilder();
-        using var serviceScope = host.Services.CreateScope();
-        var services = serviceScope.ServiceProvider;
 
-        // Récupération du service via l'interface
-        var manager = services.GetRequiredService<ICatalogManager>();
-        var adventureBooks = manager.GetCatalog(TypeBook.Aventure);
+        // 2. Récupérer le service depuis le conteneur DI
+        ICatalogManager catalogManager = host.Services.GetRequiredService<ICatalogManager>();
+
+        // 3. Utiliser le service (les dépendances sont automatiquement injectées)
+        var adventureBooks = catalogManager.GetCatalog(TypeBook.Aventure);
+
         foreach (var book in adventureBooks)
         {
             Console.WriteLine(book.Name);
@@ -25,11 +27,14 @@ class Program
         return Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
-                // Enregistrement du repository générique et compatibilité IBookRepository
-                services.AddSingleton<IGenericRepository<Book>, BookRepository>();
-                services.AddSingleton<IBookRepository>(sp => (IBookRepository)sp.GetRequiredService<IGenericRepository<Book>>());
+                // Enregistrement des repositories (Transient)
+                services.AddTransient<IGenericRepository<Book>, BookRepository>();
 
-                services.AddScoped<ICatalogManager, CatalogManager>();
+                // Compatibilité : si d'autres parties du code demandent IBookRepository
+                services.AddTransient<IBookRepository>(sp => (IBookRepository)sp.GetRequiredService<IGenericRepository<Book>>());
+
+                // Enregistrement du manager
+                services.AddTransient<ICatalogManager, CatalogManager>();
             })
             .Build();
     }
