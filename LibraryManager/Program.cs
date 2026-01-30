@@ -9,10 +9,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        // 1. Créer le host avec la configuration des services
+        // 1. Create the host with the service configuration
         var host = CreateHostBuilder();
 
-        // Seeding de la base de données
+        // Seeding of the database
         using (var scope = host.Services.CreateScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<LibraryContext>();
@@ -35,10 +35,10 @@ class Program
             }
         }
 
-        // 2. Récupérer le service depuis le conteneur DI
+        // 2. Retrieve the service from the DI container
         ICatalogManager catalogManager = host.Services.GetRequiredService<ICatalogManager>();
 
-        // 3. Utiliser le service (les dépendances sont automatiquement injectées)
+        // 3.Use the service (dependencies are automatically injected)
         var adventureBooks = catalogManager.GetCatalog(TypeBook.Aventure);
 
         foreach (var book in adventureBooks)
@@ -52,20 +52,20 @@ class Program
         return Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
-                // Enregistrement du DbContext
+                // DbContext registration
                 services.AddDbContext<LibraryContext>(options =>
                 {
                     string dbPath = Path.Combine(Directory.GetCurrentDirectory(), "library.db");
                     options.UseSqlite($"Data Source={dbPath}");
                 });
 
-                // Enregistrement des repositories (Transient)
+                // Recording repositories 
                 services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-                // Compatibilité : si d'autres parties du code demandent IBookRepository
+                // Compatibility: if other parts of the code require iBookRepository
                 services.AddTransient<IBookRepository>(sp => (IBookRepository)sp.GetRequiredService<IGenericRepository<Book>>());
 
-                // Enregistrement du manager
+                // Manager registration
                 services.AddTransient<ICatalogManager, CatalogManager>();
             })
             .Build();

@@ -7,20 +7,42 @@ public class LibraryContext : DbContext
     {
     }
 
-    // DbSet : Représente une table de la base de données
+    // DbSet : Represents a table in the database
     public DbSet<Author> Authors { get; set; }
     public DbSet<Book> Books { get; set; }
     public DbSet<Library> Libraries { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Configuration des relations One-to-Many : Author -> Books
-        modelBuilder.Entity<Author>()
-            .HasMany(a => a.Books)
-            .WithOne(b => b.Author)
-            .HasForeignKey(b => b.AuthorId);
+        // Setting up One-to-Many : Author -> Books
+
+
+
+        modelBuilder.Entity<Book>(y => {
+
+            y.ToTable("book")
+            .Property(b => b.AuthorId).HasColumnName("id_author");
+            y.HasOne(a => a.Author)
+            .WithMany(b => b.Books)
+            .HasForeignKey(x => x.AuthorId);
+
+
+             
+        });
             
-        // Configuration des relations Many-to-Many : Library <-> Books
+
+
+        modelBuilder.Entity<Book>(x =>
+        {
+            x.ToTable("book");
+            x.Property(b => b.AuthorId).HasColumnName("id_author");
+            x.HasMany(a => a.Libraries)
+            .WithMany(b => b.Books)
+            .UsingEntity("stock");
+            x.HasOne(x => x.Author);
+
+        });
+        // Setting up Many-to-Many : Library <-> Books
         modelBuilder.Entity<Library>()
             .HasMany(l => l.Books)
             .WithMany(b => b.Libraries)

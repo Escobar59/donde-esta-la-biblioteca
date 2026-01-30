@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-// Conservée pour compatibilité : IBookRepository étend l'interface générique
+// Preserved for compatibility: iBookRepository extends the generic interface
 public interface IBookRepository : IGenericRepository<Book>
 {
 }

@@ -1,6 +1,8 @@
 <Solution>
   <Project Path="BusinessObjects/BusinessObjects.csproj" />
   <Project Path="DataAccessLayer/DataAccessLayer.csproj" />
+  <Project Path="LibraryManager.Hosting/LibraryManager.Hosting.csproj" Id="f4d3f08f-1836-4c1c-a6b8-6b554813a7d8" />
   <Project Path="LibraryManager/LibraryManager.csproj" />
   <Project Path="Services/Services.csproj" />
+  <Project Path="Tests/Services.Test.csproj" />
 </Solution>

@@ -20,8 +20,23 @@ public class CatalogManager : ICatalogManager
         return _repository.GetAll().Where(i => i.Type == type);
     }
 
+    public void AddBook(Book book)
+    {
+        _repository.Add(book);
+    }
+
     public Book FindBook(int id)
     {
         return _repository.Get(id);
+    }
+
+    public Book Bestbookrated()
+    {
+        var books = _repository.GetAll().OrderByDescending(b => b.Rate).ToList();
+        return books.FirstOrDefault();
+    }
+    public void Delete(int id)
+    {
+         _repository.Delete(id);
     }
 }
